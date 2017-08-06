@@ -46,8 +46,8 @@ const isNotificationRequest = (pathname) => {
 const getPath = (url) => {
     return url.pathname
         .replace(idPattern, 'id:')
-        .replace(hrefPattern, 'href:');
-        // .replace(scanPattern, '/scanid:/scan-bom-entries');
+        .replace(hrefPattern, 'href:')
+        .replace(scanPattern, '/scanid:/scan-bom-entries');
 };
 
 fs.readFileLines(log, (line) => {

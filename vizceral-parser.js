@@ -1,7 +1,7 @@
 const fs = require('./lib/fs-util');
 
-const trafficScale = 50;
-const rootName = 'Hub Session';
+const trafficScale = 5;
+const rootName = 'New Hub Session';
 const rootNode = {
     name: rootName,
     renderer: 'focusedChild',
@@ -70,7 +70,7 @@ const getConnection = ({ source, target }) => {
 };
 
 const addToGraph = ({ source, target }) => {
-    if (source === 'Hub Session') {
+    if (source === rootName) {
         rootNode.maxVolume += trafficScale;
     }
 
@@ -91,7 +91,7 @@ const parseVizceralData = (sessions) => {
             session.forEach((request, index) => {
                 const isFinalRequest = index === session.length - 1;
                 const { referrer, path } = request;
-                const lastReferrer = lastRequest.referrer || 'Hub Session';
+                const lastReferrer = lastRequest.referrer || rootName;
 
                 if (!referrer) {
                     return;
