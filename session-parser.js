@@ -38,7 +38,7 @@ const isResourceRequest = (pathname) => {
 };
 
 const isNotificationRequest = (pathname) => {
-    return path !== '/ui/notifications' && ['notifications', 'notification-counts'].some(ext => {
+    return pathname !== '/ui/notifications' && ['notifications', 'notification-counts'].some(ext => {
         return ext === pathname.slice(-1 * ext.length);
     });
 };
@@ -46,8 +46,8 @@ const isNotificationRequest = (pathname) => {
 const getPath = (url) => {
     return url.pathname
         .replace(idPattern, 'id:')
-        .replace(hrefPattern, 'href:')
-        .replace(scanPattern, '')
+        .replace(hrefPattern, 'href:');
+        // .replace(scanPattern, '/scanid:/scan-bom-entries');
 };
 
 fs.readFileLines(log, (line) => {
@@ -64,12 +64,8 @@ fs.readFileLines(log, (line) => {
         ] = line.split(delimiter);
         const pathUrl = new URL(rawPath, 'http://localhost');
         const referrerUrl = rawReferrer === '-' ? null : new URL(rawReferrer);
-        const path = pathUrl.pathname
-            .replace(idPattern, 'id:')
-            .replace(hrefPattern, 'href:');
-        const referrer = referrerUrl && referrerUrl.pathname
-            .replace(idPattern, 'id:')
-            .replace(hrefPattern, 'href:');
+        const path = getPath(pathUrl);
+        const referrer = referrerUrl && getPath(referrerUrl);
         const referrerHost = referrerUrl && referrerUrl.hostname;
 
         if (isResourceRequest(path) || isNotificationRequest(path)) {
